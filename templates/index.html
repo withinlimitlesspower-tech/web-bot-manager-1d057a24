@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Manager Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <div>
+                        <h1>Bot Manager</h1>
+                        <p class="subtitle">AI Assistant Dashboard</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-create-bot" id="createBotBtn">
+                <i class="fas fa-plus-circle"></i>
+                Create New Bot
+            </button>
+
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="botSearch" placeholder="Search bots...">
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-section="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="nav-item" data-section="bots">
+                        <i class="fas fa-robot"></i>
+                        <span>My Bots</span>
+                    </li>
+                    <li class="nav-item" data-section="analytics">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </li>
+                    <li class="nav-item" data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="bot-list-container">
+                <h3>Active Bots <span class="bot-count" id="activeBotCount">3</span></h3>
+                <div class="bot-list" id="botList">
+                    <!-- Bot items will be populated by JavaScript -->
+                    <div class="bot-item active" data-bot-id="1">
+                        <div class="bot-avatar">CB</div>
+                        <div class="bot-info">
+                            <div class="bot-name">Customer Support</div>
+                            <div class="bot-meta">
+                                <span class="status-dot"></span>
+                                <span>OpenAI GPT-4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bot-item" data-bot-id="2">
+                        <div class="bot-avatar">SM</div>
+                        <div class="bot-info">
+                            <div class="bot-name">Social Media</div>
+                            <div class="bot-meta">
+                                <span class="status-dot"></span>
+                                <span>Anthropic Claude</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bot-item" data-bot-id="3">
+                        <div class="bot-avatar">RD</div>
+                        <div class="bot-info">
+                            <div class="bot-name">Research Assistant</div>
+                            <div class="bot-meta">
+                                <span class="status-dot inactive"></span>
+                                <span>Google Gemini</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="theme-toggle">
+                    <button id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>Dark Mode</span>
+                    </button>
+                </div>
+                <div class="api-status">
+                    <span class="status-dot"></span>
+                    <span>API Connected</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-home"></i> Dashboard Overview</h2>
+                    <p>Welcome back! Here's what's happening with your bots.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalBots">5</h3>
+                            <p>Total Bots</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalMessages">1,247</h3>
+                            <p>Messages Today</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="activeUsers">342</h3>
+                            <p>Active Users</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="uptime">99.8%</h3>
+                            <p>System Uptime</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>Message Volume (Last 7 Days)</h3>
+                        <canvas id="messageChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Bot Performance</h3>
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bots Section -->
+            <section id="bots" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-robot"></i> My Bots</h2>
+                    <p>Manage all your AI assistants in one place.</p>
+                </div>
+
+                <div class="bots-grid" id="botsGrid">
+                    <div class="bot-card">
+                        <div class="bot-card-header">
+                            <div class="bot-avatar">CB</div>
+                            <div class="bot-card-title">
+                                <h3>Customer Support</h3>
+                                <p class="bot-provider">OpenAI GPT-4</p>
+                            </div>
+                            <i class="fas fa-ellipsis-v"></i>
+                        </div>
+                        <div class="bot-card-body">
+                            <p>Handles customer inquiries and provides 24/7 support.</p>
+                            <div class="bot-stats">
+                                <span><i class="fas fa-comment"></i> 542 today</span>
+                                <span><i class="fas fa-clock"></i> 2.3s avg</span>
+                            </div>
+                        </div>
+                        <div class="bot-card-footer">
+                            <button class="btn-primary btn-sm"><i class="fas fa-play"></i> Start</button>
+                            <button class="btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn-secondary btn-sm"><i class="fas fa-comment"></i> Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="bot-card">
+                        <div class="bot-card-header">
+                            <div class="bot-avatar">SM</div>
+                            <div class="bot-card-title">
+                                <h3>Social Media</h3>
+                                <p class="bot-provider">Anthropic Claude</p>
+                            </div>
+                            <i class="fas fa-ellipsis-v"></i>
+                        </div>
+                        <div class="bot-card-body">
+                            <p>Generates social media content and engagement responses.</p>
+                            <div class="bot-stats">
+                                <span><i class="fas fa-comment"></i> 312 today</span>
+                                <span><i class="fas fa-clock"></i> 1.8s avg</span>
+                            </div>
+                        </div>
+                        <div class="bot-card-footer">
+                            <button class="btn-primary btn-sm"><i class="fas fa-play"></i> Start</button>
+                            <button class="btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn-secondary btn-sm"><i class="fas fa-comment"></i> Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="bot-card">
